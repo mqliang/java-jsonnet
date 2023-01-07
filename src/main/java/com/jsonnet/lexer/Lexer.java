@@ -1,6 +1,7 @@
 package com.jsonnet.lexer;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.jsonnet.lexer.fodder.FodderElement;
 import com.jsonnet.lexer.fodder.FodderKind;
 import java.util.LinkedList;
@@ -361,7 +362,7 @@ public class Lexer {
       // consume runes until meet the close "*/"
       for (rune = this.nextRune(); ; rune = this.nextRune()) {
         if (isEOF(rune)) {
-          throw new StaticErrorException("Multi-line comment has no terminating */.", this.fileName, commentStartLoc);
+          throw new StaticErrorException("Multi-line comment has no terminating */", this.fileName, commentStartLoc);
         }
         if (rune == '*' && this.peek() == '/') {
           String commentData =
@@ -614,7 +615,7 @@ public class Lexer {
   }
 
   static boolean isSymbol(int rune) {
-    return ImmutableList.of('!', '$', ':', '~', '+', '-', '&', '|', '^', '=', '<', '>', '*', '/', '%', '#')
+    return ImmutableSet.of('!', '$', ':', '~', '+', '-', '&', '|', '^', '=', '<', '>', '*', '/', '%', '#')
         .contains((char) rune);
   }
 
