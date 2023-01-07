@@ -144,6 +144,9 @@ public class TestLexer {
         new testCase("double string \"hi", "\"hi", ImmutableList.of(), "double string \"hi:1:1 Unterminated String"),
         new testCase("single string 'hi", "'hi", ImmutableList.of(), "single string 'hi:1:1 Unterminated String"),
 
+        new testCase("c comment no term",
+            "/* hi", ImmutableList.of(),
+            "c comment no term:1:1 Multi-line comment has no terminating */"),  // This test doesn't look at fodder (yet?)
         new testCase("block string bad indent",
             "|||\n" + "  test\n" + " foo\n" + "|||",
             ImmutableList.of(), "block string bad indent:1:1 Text block not terminated with |||"),
@@ -153,6 +156,9 @@ public class TestLexer {
         new testCase("block string not term",
             "|||\n" + "  test\n",
             ImmutableList.of(), "block string not term:1:1 Text block not terminated with |||"),
+        new testCase("block string no ws", "|||\n" + "test\n" + "|||",
+            ImmutableList.of(),
+            "block string no ws:1:1 Text block's first line must start with whitespace"),
 
         new testCase("junk", "\uD83D\uDCA9", ImmutableList.of(), "junk:1:1 Could not lex the character \uD83D\uDCA9")
     );
