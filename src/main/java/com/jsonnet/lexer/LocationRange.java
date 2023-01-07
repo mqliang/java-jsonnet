@@ -1,7 +1,7 @@
 package com.jsonnet.lexer;
 
 // LocationRange represents a range of a source file.
-class LocationRange {
+public class LocationRange {
   String fileName;
   Location begin;
   Location end;
