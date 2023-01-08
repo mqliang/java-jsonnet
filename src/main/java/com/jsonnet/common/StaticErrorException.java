@@ -1,4 +1,8 @@
-package com.jsonnet.lexer;
+package com.jsonnet.common;
+
+import com.jsonnet.lexer.Location;
+import com.jsonnet.lexer.LocationRange;
+
 
 // StaticErrorException represents an error during parsing/lexing some jsonnet.
 public class StaticErrorException extends RuntimeException{

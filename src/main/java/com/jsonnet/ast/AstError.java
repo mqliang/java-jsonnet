@@ -7,7 +7,8 @@ import com.jsonnet.lexer.LocationRange;
 public class AstError extends AstBaseNode {
   AstNode expr;
 
-  AstError(LocationRange loc) {
+  public AstError(LocationRange loc, AstNode expr) {
     super(loc);
+    this.expr = expr;
   }
 }

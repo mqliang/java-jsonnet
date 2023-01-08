@@ -1,7 +1,7 @@
 package com.jsonnet.lexer;
 
 // Location represents a single location in an (unspecified) file.
-class Location {
+public class Location {
   int line;
   int column;
 

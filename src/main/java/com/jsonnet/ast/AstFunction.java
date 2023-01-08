@@ -11,7 +11,10 @@ public class AstFunction extends AstBaseNode {
   boolean trailingComma;
   AstNode body;
 
-  AstFunction(LocationRange loc) {
+  public AstFunction(LocationRange loc, List<String> parameters, boolean trailingComma, AstNode body) {
     super(loc);
+    this.parameters = parameters;
+    this.trailingComma = trailingComma;
+    this.body = body;
   }
 }
