@@ -1,7 +1,7 @@
 package com.jsonnet.lexer;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.jsonnet.common.StaticErrorException;
 import com.jsonnet.lexer.fodder.FodderElement;
 import com.jsonnet.lexer.fodder.FodderKind;
 import java.util.LinkedList;
@@ -393,7 +393,7 @@ public class Lexer {
       String stringBlockIndent =
           subStringByRuneIndex(this.input, this.currPos.runeNo, this.currPos.runeNo + numWhiteSpace);
       if (numWhiteSpace == 0) {
-        throw new StaticErrorException("Text block's first line must start with whitespace.", this.fileName,
+        throw new StaticErrorException("Text block's first line must start with whitespace", this.fileName,
             commentStartLoc);
       }
 

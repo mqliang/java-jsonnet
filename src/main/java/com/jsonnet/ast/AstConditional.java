@@ -11,7 +11,10 @@ public class AstConditional extends AstBaseNode {
   AstNode branchTrue;
   AstNode branchFalse;
 
-  AstConditional(LocationRange loc) {
+  public AstConditional(LocationRange loc, AstNode cond, AstNode branchTrue, AstNode branchFalse) {
     super(loc);
+    this.cond = cond;
+    this.branchTrue = branchTrue;
+    this.branchFalse = branchFalse;
   }
 }

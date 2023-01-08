@@ -2,9 +2,9 @@ package com.jsonnet.lexer;
 
 // LocationRange represents a range of a source file.
 public class LocationRange {
-  String fileName;
-  Location begin;
-  Location end;
+  public String fileName;
+  public Location begin;
+  public Location end;
 
   public LocationRange(String fileName, Location begin, Location end) {
     this.fileName = fileName;
@@ -13,7 +13,7 @@ public class LocationRange {
   }
 
   // IsSet returns if this LocationRange has been set.
-  boolean isSet() {
+  public boolean isSet() {
     return this.begin.isSet();
   }
 

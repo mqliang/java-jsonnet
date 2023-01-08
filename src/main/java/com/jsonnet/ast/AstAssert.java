@@ -10,7 +10,10 @@ public class AstAssert extends AstBaseNode {
   AstNode message;
   AstNode rest;
 
-  AstAssert(LocationRange loc) {
+  public AstAssert(LocationRange loc, AstNode cond, AstNode message, AstNode rest) {
     super(loc);
+    this.cond = cond;
+    this.message = message;
+    this.rest = rest;
   }
 }

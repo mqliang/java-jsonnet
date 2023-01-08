@@ -5,13 +5,13 @@ import java.util.List;
 
 
 public class Token {
-  TokenKind kind; // The type of the token
+  public TokenKind kind; // The type of the token
   List<FodderElement> fodder; // Any fodder the occurs before this token
-  String data; // Content of the token if it is not a keyword
+  public String data; // Content of the token if it is not a keyword
   // Extra info for when kind == tokenStringBlock
   String stringBlockIndent;     // The sequence of whitespace that indented the block.
   String stringBlockTermIndent; // This is always fewer whitespace characters than in stringBlockIndent.
-  LocationRange loc;
+  public LocationRange loc;
 
   public Token(TokenKind kind, List<FodderElement> fodder, String data, String stringBlockIndent,
       String stringBlockTermIndent, LocationRange loc) {
