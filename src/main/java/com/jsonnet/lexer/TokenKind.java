@@ -9,7 +9,6 @@ public enum TokenKind {
   tokenBraceR("}"),
   tokenBracketL("["),
   tokenBracketR("]"),
-  tokenColon(":"),
   tokenComma(","),
   tokenDollar("$"),
   tokenDot("."),

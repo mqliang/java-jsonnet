@@ -320,7 +320,7 @@ public class Lexer {
     }
   }
 
-  // lexSymbol will lex a token that starts with a symbol. This could be a comment, block quote or an operator.
+  // lexSymbol will lex a token that starts with a symbol. This could be a C or C++ comment, block quote or an operator.
   // This function assumes that the next rune to be served by the lexer will be the first rune of the new token.
   private void lexSymbol() {
     int rune = this.nextRune();
@@ -329,7 +329,7 @@ public class Lexer {
     if (rune == '/' && this.peek() == '/') {
       this.nextRune();
       this.resetTokenStart(); // Throw out the leading //
-      // consume the whole line as it's comments
+      // consume the whole line as it's a comment
       while (!isEOF(rune) && !isNewLine(rune)) {
         rune = this.nextRune();
       }
@@ -337,19 +337,6 @@ public class Lexer {
       // Leave the '\n' in the lexer to be fodder for the next round
       this.stepBack();
       this.addCommentFodder(fodderCommentCpp);
-      return;
-    }
-
-    // python style comment
-    if (rune == '#') {
-      this.resetTokenStart(); // Throw out the leading #
-      // consume the whole line as it's comments
-      while (!isEOF(rune) && !isNewLine(rune)) {
-        rune = this.nextRune();
-      }
-      // Leave the '\n' in the lexer to be fodder for the next round
-      this.stepBack();
-      this.addCommentFodder(fodderCommentHash);
       return;
     }
 
@@ -438,13 +425,31 @@ public class Lexer {
     }
 
     // Assume any string of symbols is a single operator.
-    rune = this.nextRune();
-    while (isSymbol(rune)) {
-      rune = this.nextRune();
+    for (rune = this.nextRune(); isSymbol(rune); rune = this.nextRune()) {
+      // Not allowed //, /*, ||| in operators
+      if (rune == '/') {
+        String remaining = subStringByRuneIndex(this.input, this.currPos.runeNo);
+        if (remaining.startsWith("/") || remaining.startsWith("*") || remaining.startsWith("||")) {
+          break;
+        }
+      }
     }
 
     this.stepBack();
-    this.emitToken(tokenOperator);
+    // Operators are not allowed to end with + - ~ ! unless they are one rune long.
+    // So, wind it back if we need to, but stop at the first rune.
+    // This relies on the hack that all operator symbols are ASCII and thus there is
+    // no need to treat this substring as general UTF-8.
+    for (rune = this.runes[this.currPos.runeNo - 1]; this.currPos.runeNo > this.tokenStart + 1; this.currPos.runeNo--) {
+      if (!ImmutableSet.of('+', '-', '~', '!').contains((char) rune)) {
+        break;
+      }
+    }
+    if (subStringByRuneIndex(input, this.tokenStart, this.currPos.runeNo).equals("$")) {
+      this.emitToken(tokenDollar);
+    } else {
+      this.emitToken(tokenOperator);
+    }
   }
 
   public List<Token> lex() {
@@ -459,12 +464,8 @@ public class Lexer {
         this.emitToken(tokenBracketL);
       } else if (rune == ']') {
         this.emitToken(tokenBracketR);
-      } else if (rune == ':') {
-        this.emitToken(tokenColon);
       } else if (rune == ',') {
         this.emitToken(tokenComma);
-      } else if (rune == '$') {
-        this.emitToken(tokenDollar);
       } else if (rune == '.') {
         this.emitToken(tokenDot);
       } else if (rune == '(') {
@@ -473,13 +474,6 @@ public class Lexer {
         this.emitToken(tokenParenR);
       } else if (rune == ';') {
         this.emitToken(tokenSemicolon);
-      } else if (rune == '!') { // Operators
-        if (this.peek() == '=') {
-          this.nextRune();
-        }
-        this.emitToken(tokenOperator);
-      } else if (rune == '~' || rune == '+' || rune == '-') {
-        this.emitToken(tokenOperator);
       } else if (isDigit(rune)) {
         this.stepBack();
         this.lexNumber();
@@ -521,6 +515,15 @@ public class Lexer {
             this.nextRune();
           }
         }
+      } else if (rune == '#') {
+        this.resetTokenStart(); // Throw out the leading #
+        // Consume the whole line as it's Python style comments
+        while (rune != lexEOF && !isNewLine(rune)) {
+          rune = this.nextRune();
+        }
+        // Leave the '\n' in the lexer to be fodder for the next round
+        this.stepBack();
+        this.addCommentFodder(fodderCommentHash);
       } else {
         if (isIdentifierFirst(rune)) {
           this.stepBack();
@@ -541,9 +544,12 @@ public class Lexer {
     return this.tokens;
   }
 
+  // -------------------------------------------------------------------------------------------------------------------
+  // Helpers
+
   // Check that b has at least the same whitespace prefix as a and returns the amount of this whitespace, otherwise
   // returns 0. If a has no whitespace prefix than return 0.
-  private int checkWhitespace(String a, String b) {
+  static int checkWhitespace(String a, String b) {
     int i = 0;
     while (i < a.length()) {
       if (a.charAt(i) != ' ' && a.charAt(i) != '\t') {
@@ -564,15 +570,12 @@ public class Lexer {
     return i;
   }
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Helpers
-
-  private String subStringByRuneIndex(String input, int runeIndexStart) {
+  static String subStringByRuneIndex(String input, int runeIndexStart) {
     int indexStart = input.offsetByCodePoints(0, runeIndexStart);
     return input.substring(indexStart);
   }
 
-  private String subStringByRuneIndex(String input, int runeIndexStart, int runeIndexEnd) {
+  static String subStringByRuneIndex(String input, int runeIndexStart, int runeIndexEnd) {
     int indexStart = input.offsetByCodePoints(0, runeIndexStart);
     int indexEnd = input.offsetByCodePoints(indexStart, runeIndexEnd - runeIndexStart);
     return input.substring(indexStart, indexEnd);
@@ -615,7 +618,7 @@ public class Lexer {
   }
 
   static boolean isSymbol(int rune) {
-    return ImmutableSet.of('!', '$', ':', '~', '+', '-', '&', '|', '^', '=', '<', '>', '*', '/', '%', '#')
+    return ImmutableSet.of('!', '$', ':', '~', '+', '-', '&', '|', '^', '=', '<', '>', '*', '/', '%')
         .contains((char) rune);
   }
 

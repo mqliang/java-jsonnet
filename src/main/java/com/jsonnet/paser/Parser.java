@@ -112,7 +112,7 @@ public class Parser {
         this.pop();
         AstNode cond = this.parse(maxPrecedence);
         AstNode msg = null;
-        if (this.peek().kind == TokenKind.tokenColon) {
+        if (this.peek().kind == TokenKind.tokenOperator && this.pop().data.equals(":")) {
           this.pop();
           msg = this.parse(maxPrecedence);
         }
