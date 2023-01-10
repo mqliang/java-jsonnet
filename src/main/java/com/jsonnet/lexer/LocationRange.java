@@ -1,16 +1,14 @@
 package com.jsonnet.lexer;
 
+import lombok.AllArgsConstructor;
+
+
 // LocationRange represents a range of a source file.
+@AllArgsConstructor
 public class LocationRange {
   public String fileName;
   public Location begin;
   public Location end;
-
-  public LocationRange(String fileName, Location begin, Location end) {
-    this.fileName = fileName;
-    this.begin = begin;
-    this.end = end;
-  }
 
   // IsSet returns if this LocationRange has been set.
   public boolean isSet() {

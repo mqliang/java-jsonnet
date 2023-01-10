@@ -13,4 +13,13 @@ public enum UnaryOp {
   public String toString() {
     return text;
   }
+
+  public static boolean contains(String text) {
+    for (UnaryOp op : UnaryOp.values()) {
+      if (op.name().equals(text)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

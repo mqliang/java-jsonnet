@@ -9,10 +9,13 @@ import java.util.List;
 public class AstArrayComp extends AstBaseNode {
   AstNode body;
   boolean trailingComma;
-  List<AstCompSpec> spec = new LinkedList<>();
+  List<AstCompSpec> specs;
 
-  AstArrayComp(LocationRange loc) {
+  public AstArrayComp(LocationRange loc, AstNode body, boolean trailingComma, List<AstCompSpec> specs) {
     super(loc);
+    this.body = body;
+    this.trailingComma = trailingComma;
+    this.specs = specs;
   }
 }
 

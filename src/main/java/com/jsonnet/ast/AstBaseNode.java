@@ -1,14 +1,12 @@
 package com.jsonnet.ast;
 
 import com.jsonnet.lexer.LocationRange;
+import lombok.AllArgsConstructor;
 
 
-public class AstBaseNode implements AstNode {
-  LocationRange loc;
-
-  AstBaseNode(LocationRange loc) {
-    this.loc = loc;
-  }
+@AllArgsConstructor
+abstract class AstBaseNode implements AstNode {
+  final LocationRange loc;
 
   @Override
   public LocationRange getLoc() {

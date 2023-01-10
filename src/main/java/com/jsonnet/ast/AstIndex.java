@@ -10,7 +10,10 @@ public class AstIndex extends AstBaseNode {
   AstNode index;
   String id;
 
-  AstIndex(LocationRange loc) {
+  public AstIndex(LocationRange loc, AstNode target, AstNode index, String id) {
     super(loc);
+    this.target = target;
+    this.index = index;
+    this.id = id;
   }
 }

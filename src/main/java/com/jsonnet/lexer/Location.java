@@ -1,14 +1,13 @@
 package com.jsonnet.lexer;
 
+import lombok.AllArgsConstructor;
+
+
 // Location represents a single location in an (unspecified) file.
+@AllArgsConstructor
 public class Location {
   int line;
   int column;
-
-  public Location(int line, int column) {
-    this.line = line;
-    this.column = column;
-  }
 
   // IsSet returns if this Location has been set.
   boolean isSet() {

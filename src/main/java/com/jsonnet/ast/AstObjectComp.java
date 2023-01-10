@@ -1,12 +1,19 @@
 package com.jsonnet.ast;
 
-import java.util.LinkedList;
+import com.jsonnet.lexer.LocationRange;
 import java.util.List;
 
 
 // AstObjectComp represents object comprehension: { [e]: e for x in e for.. if... }.
-public class AstObjectComp {
-  List<AstObjectField> fields = new LinkedList<>();
+public class AstObjectComp extends AstBaseNode {
+  List<AstObjectField> fields;
   boolean trailingComma;
-  List<AstCompSpec> specs = new LinkedList<>();
+  List<AstCompSpec> specs;
+
+  public AstObjectComp(LocationRange loc, List<AstObjectField> fields, boolean trailingComma, List<AstCompSpec> specs) {
+    super(loc);
+    this.fields = fields;
+    this.trailingComma = trailingComma;
+    this.specs = specs;
+  }
 }

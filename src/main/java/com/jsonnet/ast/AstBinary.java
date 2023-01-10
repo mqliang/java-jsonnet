@@ -9,7 +9,10 @@ public class AstBinary extends AstBaseNode {
   BinaryOp op;
   AstNode right;
 
-  AstBinary(LocationRange loc) {
+  public AstBinary(LocationRange loc, AstNode left, BinaryOp op, AstNode right) {
     super(loc);
+    this.left = left;
+    this.op = op;
+    this.right = right;
   }
 }

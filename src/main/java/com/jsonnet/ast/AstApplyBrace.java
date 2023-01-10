@@ -8,7 +8,9 @@ public class AstApplyBrace extends AstBaseNode {
   AstNode left;
   AstNode right;
 
-  AstApplyBrace(LocationRange loc) {
+  public AstApplyBrace(LocationRange loc, AstNode left, AstNode right) {
     super(loc);
+    this.left = left;
+    this.right = right;
   }
 }

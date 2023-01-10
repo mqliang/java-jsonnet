@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.jsonnet.common.StaticErrorException;
 import com.jsonnet.lexer.Lexer;
 import com.jsonnet.lexer.Token;
+import com.jsonnet.lexer.TokenKind;
 import java.util.LinkedList;
 import java.util.List;
 import org.testng.Assert;
@@ -27,7 +28,11 @@ public class TestLexer {
     }
   }
 
-  static Token tEOF = Token.of(tokenEndOfFile, "");
+  public static Token newToken(TokenKind kind, String data) {
+    return new Token(kind, null, data, null, null, null);
+  }
+
+  static Token tEOF = newToken(tokenEndOfFile, "");
 
   static boolean tokensEqual(List<Token> ts1, List<Token> ts2) {
     if (ts1.size() != ts2.size()) {
@@ -48,93 +53,93 @@ public class TestLexer {
     List<testCase> testCases = ImmutableList.of(
         new testCase("empty", "", ImmutableList.of(), ""),
         new testCase("whitespace", "  \t\n\r\r\n", ImmutableList.of(), ""),
-        new testCase("brace L", "{", ImmutableList.of(Token.of(tokenBraceL, "{")), ""),
-        new testCase("brace R", "}", ImmutableList.of(Token.of(tokenBraceR, "}")), ""),
-        new testCase("bracket L", "[", ImmutableList.of(Token.of(tokenBracketL, "[")), ""),
-        new testCase("bracket R", "]", ImmutableList.of(Token.of(tokenBracketR, "]")), ""),
-        new testCase("colon", ":", ImmutableList.of(Token.of(tokenOperator, ":")), ""),
-        new testCase("colon2", "::", ImmutableList.of(Token.of(tokenOperator, "::")), ""),
-        new testCase("colon3", ":::", ImmutableList.of(Token.of(tokenOperator, ":::")), ""),
-        new testCase("arrow right", "->", ImmutableList.of(Token.of(tokenOperator, "->")), ""),
-        new testCase("less than minus", "<-", ImmutableList.of(Token.of(tokenOperator, "<"), Token.of(tokenOperator, "-")), ""),
-        new testCase("comma", ",", ImmutableList.of(Token.of(tokenComma, ",")), ""),
-        new testCase("dollar", "$", ImmutableList.of(Token.of(tokenDollar, "$")), ""),
-        new testCase("dot", ".", ImmutableList.of(Token.of(tokenDot, ".")), ""),
-        new testCase("paren L", "(", ImmutableList.of(Token.of(tokenParenL, "(")), ""),
-        new testCase("paren R", ")", ImmutableList.of(Token.of(tokenParenR, ")")), ""),
-        new testCase("semicolon", ";", ImmutableList.of(Token.of(tokenSemicolon, ";")), ""),
-        new testCase("not 1", "!", ImmutableList.of(Token.of(tokenOperator, "!")), ""),
-        new testCase("not 2", "! ", ImmutableList.of(Token.of(tokenOperator, "!")), ""),
-        new testCase("not equal", "!=", ImmutableList.of(Token.of(tokenOperator, "!=")), ""),
-        new testCase("tilde", "~", ImmutableList.of(Token.of(tokenOperator, "~")), ""),
-        new testCase("plus", "+", ImmutableList.of(Token.of(tokenOperator, "+")), ""),
-        new testCase("minus", "-", ImmutableList.of(Token.of(tokenOperator, "-")), ""),
-        new testCase("number 0", "0", ImmutableList.of(Token.of(tokenNumber, "0")), ""),
-        new testCase("number 1", "1", ImmutableList.of(Token.of(tokenNumber, "1")), ""),
-        new testCase("number 1.0", "1.0", ImmutableList.of(Token.of(tokenNumber, "1.0")), ""),
-        new testCase("number 0.1", "0.1", ImmutableList.of(Token.of(tokenNumber, "0.1")), ""),
-        new testCase("number 0e100", "0e100", ImmutableList.of(Token.of(tokenNumber, "0e100")), ""),
-        new testCase("number 1e100", "1e100", ImmutableList.of(Token.of(tokenNumber, "1e100")), ""),
-        new testCase("number 1.1e100", "1.1e100", ImmutableList.of(Token.of(tokenNumber, "1.1e100")), ""),
-        new testCase("number 1.1e-100", "1.1e-100", ImmutableList.of(Token.of(tokenNumber, "1.1e-100")), ""),
-        new testCase("number 1.1e+100", "1.1e+100", ImmutableList.of(Token.of(tokenNumber, "1.1e+100")), ""),
-        new testCase("number 0100", "0100", ImmutableList.of(Token.of(tokenNumber, "0"), Token.of(tokenNumber, "100")), ""),
-        new testCase("number 10+10", "10+10", ImmutableList.of(Token.of(tokenNumber, "10"), Token.of(tokenOperator, "+"), Token.of(tokenNumber, "10")), ""),
+        new testCase("brace L", "{", ImmutableList.of(newToken(tokenBraceL, "{")), ""),
+        new testCase("brace R", "}", ImmutableList.of(newToken(tokenBraceR, "}")), ""),
+        new testCase("bracket L", "[", ImmutableList.of(newToken(tokenBracketL, "[")), ""),
+        new testCase("bracket R", "]", ImmutableList.of(newToken(tokenBracketR, "]")), ""),
+        new testCase("colon", ":", ImmutableList.of(newToken(tokenOperator, ":")), ""),
+        new testCase("colon2", "::", ImmutableList.of(newToken(tokenOperator, "::")), ""),
+        new testCase("colon3", ":::", ImmutableList.of(newToken(tokenOperator, ":::")), ""),
+        new testCase("arrow right", "->", ImmutableList.of(newToken(tokenOperator, "->")), ""),
+        new testCase("less than minus", "<-", ImmutableList.of(newToken(tokenOperator, "<"), newToken(tokenOperator, "-")), ""),
+        new testCase("comma", ",", ImmutableList.of(newToken(tokenComma, ",")), ""),
+        new testCase("dollar", "$", ImmutableList.of(newToken(tokenDollar, "$")), ""),
+        new testCase("dot", ".", ImmutableList.of(newToken(tokenDot, ".")), ""),
+        new testCase("paren L", "(", ImmutableList.of(newToken(tokenParenL, "(")), ""),
+        new testCase("paren R", ")", ImmutableList.of(newToken(tokenParenR, ")")), ""),
+        new testCase("semicolon", ";", ImmutableList.of(newToken(tokenSemicolon, ";")), ""),
+        new testCase("not 1", "!", ImmutableList.of(newToken(tokenOperator, "!")), ""),
+        new testCase("not 2", "! ", ImmutableList.of(newToken(tokenOperator, "!")), ""),
+        new testCase("not equal", "!=", ImmutableList.of(newToken(tokenOperator, "!=")), ""),
+        new testCase("tilde", "~", ImmutableList.of(newToken(tokenOperator, "~")), ""),
+        new testCase("plus", "+", ImmutableList.of(newToken(tokenOperator, "+")), ""),
+        new testCase("minus", "-", ImmutableList.of(newToken(tokenOperator, "-")), ""),
+        new testCase("number 0", "0", ImmutableList.of(newToken(tokenNumber, "0")), ""),
+        new testCase("number 1", "1", ImmutableList.of(newToken(tokenNumber, "1")), ""),
+        new testCase("number 1.0", "1.0", ImmutableList.of(newToken(tokenNumber, "1.0")), ""),
+        new testCase("number 0.1", "0.1", ImmutableList.of(newToken(tokenNumber, "0.1")), ""),
+        new testCase("number 0e100", "0e100", ImmutableList.of(newToken(tokenNumber, "0e100")), ""),
+        new testCase("number 1e100", "1e100", ImmutableList.of(newToken(tokenNumber, "1e100")), ""),
+        new testCase("number 1.1e100", "1.1e100", ImmutableList.of(newToken(tokenNumber, "1.1e100")), ""),
+        new testCase("number 1.1e-100", "1.1e-100", ImmutableList.of(newToken(tokenNumber, "1.1e-100")), ""),
+        new testCase("number 1.1e+100", "1.1e+100", ImmutableList.of(newToken(tokenNumber, "1.1e+100")), ""),
+        new testCase("number 0100", "0100", ImmutableList.of(newToken(tokenNumber, "0"), newToken(tokenNumber, "100")), ""),
+        new testCase("number 10+10", "10+10", ImmutableList.of(newToken(tokenNumber, "10"), newToken(tokenOperator, "+"), newToken(tokenNumber, "10")), ""),
 
-        new testCase("double string \"hi\"", "\"hi\"", ImmutableList.of(Token.of(tokenStringDouble, "hi")), ""),
-        new testCase("double string \"hi nl\"", "\"hi\n\"", ImmutableList.of(Token.of(tokenStringDouble, "hi\n")), ""),
-        new testCase("double string \"hi\\\"\"", "\"hi\\\"\"", ImmutableList.of(Token.of(tokenStringDouble, "hi\\\"")), ""),
-        new testCase("double string \"hi\\nl\"", "\"hi\\\n\"", ImmutableList.of(Token.of(tokenStringDouble, "hi\\\n")), ""),
+        new testCase("double string \"hi\"", "\"hi\"", ImmutableList.of(newToken(tokenStringDouble, "hi")), ""),
+        new testCase("double string \"hi nl\"", "\"hi\n\"", ImmutableList.of(newToken(tokenStringDouble, "hi\n")), ""),
+        new testCase("double string \"hi\\\"\"", "\"hi\\\"\"", ImmutableList.of(newToken(tokenStringDouble, "hi\\\"")), ""),
+        new testCase("double string \"hi\\nl\"", "\"hi\\\n\"", ImmutableList.of(newToken(tokenStringDouble, "hi\\\n")), ""),
 
-        new testCase("single string 'hi'", "'hi'", ImmutableList.of(Token.of(tokenStringSingle, "hi")), ""),
-        new testCase("single string 'hi nl'", "'hi\n'", ImmutableList.of(Token.of(tokenStringSingle, "hi\n")), ""),
-        new testCase("single string 'hi\\''", "'hi\\''", ImmutableList.of(Token.of(tokenStringSingle, "hi\\'")), ""),
-        new testCase("single string 'hi\\nl'", "'hi\\\n'", ImmutableList.of(Token.of(tokenStringSingle, "hi\\\n")), ""),
+        new testCase("single string 'hi'", "'hi'", ImmutableList.of(newToken(tokenStringSingle, "hi")), ""),
+        new testCase("single string 'hi nl'", "'hi\n'", ImmutableList.of(newToken(tokenStringSingle, "hi\n")), ""),
+        new testCase("single string 'hi\\''", "'hi\\''", ImmutableList.of(newToken(tokenStringSingle, "hi\\'")), ""),
+        new testCase("single string 'hi\\nl'", "'hi\\\n'", ImmutableList.of(newToken(tokenStringSingle, "hi\\\n")), ""),
 
-        new testCase("assert", "assert", ImmutableList.of(Token.of(tokenAssert, "assert")), ""),
-        new testCase("else", "else", ImmutableList.of(Token.of(tokenElse, "else")), ""),
-        new testCase("error", "error", ImmutableList.of(Token.of(tokenError, "error")), ""),
-        new testCase("false", "false", ImmutableList.of(Token.of(tokenFalse, "false")), ""),
-        new testCase("for", "for", ImmutableList.of(Token.of(tokenFor, "for")), ""),
-        new testCase("function", "function", ImmutableList.of(Token.of(tokenFunction, "function")), ""),
-        new testCase("if", "if", ImmutableList.of(Token.of(tokenIf, "if")), ""),
-        new testCase("import", "import", ImmutableList.of(Token.of(tokenImport, "import")), ""),
-        new testCase("importstr", "importstr", ImmutableList.of(Token.of(tokenImportStr, "importstr")), ""),
-        new testCase("in", "in", ImmutableList.of(Token.of(tokenIn, "in")), ""),
-        new testCase("local", "local", ImmutableList.of(Token.of(tokenLocal, "local")), ""),
-        new testCase("null", "null", ImmutableList.of(Token.of(tokenNullLit, "null")), ""),
-        new testCase("self", "self", ImmutableList.of(Token.of(tokenSelf, "self")), ""),
-        new testCase("super", "super", ImmutableList.of(Token.of(tokenSuper, "super")), ""),
-        new testCase("tailstrict", "tailstrict", ImmutableList.of(Token.of(tokenTailStrict, "tailstrict")), ""),
-        new testCase("then", "then", ImmutableList.of(Token.of(tokenThen, "then")), ""),
-        new testCase("true", "true", ImmutableList.of(Token.of(tokenTrue, "true")), ""),
+        new testCase("assert", "assert", ImmutableList.of(newToken(tokenAssert, "assert")), ""),
+        new testCase("else", "else", ImmutableList.of(newToken(tokenElse, "else")), ""),
+        new testCase("error", "error", ImmutableList.of(newToken(tokenError, "error")), ""),
+        new testCase("false", "false", ImmutableList.of(newToken(tokenFalse, "false")), ""),
+        new testCase("for", "for", ImmutableList.of(newToken(tokenFor, "for")), ""),
+        new testCase("function", "function", ImmutableList.of(newToken(tokenFunction, "function")), ""),
+        new testCase("if", "if", ImmutableList.of(newToken(tokenIf, "if")), ""),
+        new testCase("import", "import", ImmutableList.of(newToken(tokenImport, "import")), ""),
+        new testCase("importstr", "importstr", ImmutableList.of(newToken(tokenImportStr, "importstr")), ""),
+        new testCase("in", "in", ImmutableList.of(newToken(tokenIn, "in")), ""),
+        new testCase("local", "local", ImmutableList.of(newToken(tokenLocal, "local")), ""),
+        new testCase("null", "null", ImmutableList.of(newToken(tokenNullLit, "null")), ""),
+        new testCase("self", "self", ImmutableList.of(newToken(tokenSelf, "self")), ""),
+        new testCase("super", "super", ImmutableList.of(newToken(tokenSuper, "super")), ""),
+        new testCase("tailstrict", "tailstrict", ImmutableList.of(newToken(tokenTailStrict, "tailstrict")), ""),
+        new testCase("then", "then", ImmutableList.of(newToken(tokenThen, "then")), ""),
+        new testCase("true", "true", ImmutableList.of(newToken(tokenTrue, "true")), ""),
 
-        new testCase("identifier", "foobar", ImmutableList.of(Token.of(tokenIdentifier, "foobar")), ""),
+        new testCase("identifier", "foobar", ImmutableList.of(newToken(tokenIdentifier, "foobar")), ""),
 
         new testCase("c++ comment", "// hi", ImmutableList.of(), ""),  // This test doesn't look at fodder (yet?)
         new testCase("hash comment", "# hi", ImmutableList.of(), ""),  // This test doesn't look at fodder (yet?)
         new testCase("c comment", "/* hi */", ImmutableList.of(), ""), // This test doesn't look at fodder (yet?)
 
         new testCase("block string spaces", "|||\n" + "  test\n" + "    more\n" + "  |||\n" + "    foo\n" + "|||",
-            ImmutableList.of(Token.of(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
+            ImmutableList.of(newToken(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
         new testCase("block string tabs", "|||\n" + "\ttest\n" + "\t  more\n" + "\t|||\n" + "\t  foo\n" + "|||",
-            ImmutableList.of(Token.of(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
+            ImmutableList.of(newToken(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
         new testCase("block string mixed",
             "|||\n" + "\t  \ttest\n" + "\t  \t  more\n" + "\t  \t|||\n" + "\t  \t  foo\n" + "|||",
-            ImmutableList.of(Token.of(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
+            ImmutableList.of(newToken(tokenStringBlock, "test\n  more\n|||\n  foo\n")), ""),
         new testCase("block string blanks", "|||\n\n" + "\ttest\n\n\n" + "\t  more\n" + "\t|||\n" + "\t  foo\n" + "|||",
-            ImmutableList.of(Token.of(tokenStringBlock, "\ntest\n\n\n  more\n|||\n  foo\n")), ""),
+            ImmutableList.of(newToken(tokenStringBlock, "\ntest\n\n\n  more\n|||\n  foo\n")), ""),
 
-        new testCase("op *", "*", ImmutableList.of(Token.of(tokenOperator, "*")), ""),
-        new testCase("op /", "/", ImmutableList.of(Token.of(tokenOperator, "/")), ""),
-        new testCase("op %", "%", ImmutableList.of(Token.of(tokenOperator, "%")), ""),
-        new testCase("op &", "&", ImmutableList.of(Token.of(tokenOperator, "&")), ""),
-        new testCase("op |", "|", ImmutableList.of(Token.of(tokenOperator, "|")), ""),
-        new testCase("op ^", "^", ImmutableList.of(Token.of(tokenOperator, "^")), ""),
-        new testCase("op =", "=", ImmutableList.of(Token.of(tokenOperator, "=")), ""),
-        new testCase("op <", "<", ImmutableList.of(Token.of(tokenOperator, "<")), ""),
-        new testCase("op >", ">", ImmutableList.of(Token.of(tokenOperator, ">")), ""),
-        new testCase("op >==|", ">==|", ImmutableList.of(Token.of(tokenOperator, ">==|")), ""));
+        new testCase("op *", "*", ImmutableList.of(newToken(tokenOperator, "*")), ""),
+        new testCase("op /", "/", ImmutableList.of(newToken(tokenOperator, "/")), ""),
+        new testCase("op %", "%", ImmutableList.of(newToken(tokenOperator, "%")), ""),
+        new testCase("op &", "&", ImmutableList.of(newToken(tokenOperator, "&")), ""),
+        new testCase("op |", "|", ImmutableList.of(newToken(tokenOperator, "|")), ""),
+        new testCase("op ^", "^", ImmutableList.of(newToken(tokenOperator, "^")), ""),
+        new testCase("op =", "=", ImmutableList.of(newToken(tokenOperator, "=")), ""),
+        new testCase("op <", "<", ImmutableList.of(newToken(tokenOperator, "<")), ""),
+        new testCase("op >", ">", ImmutableList.of(newToken(tokenOperator, ">")), ""),
+        new testCase("op >==|", ">==|", ImmutableList.of(newToken(tokenOperator, ">==|")), ""));
 
     for (testCase t : testCases) {
       // Copy the test tokens and append an EOF token

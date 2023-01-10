@@ -5,16 +5,15 @@ import com.jsonnet.lexer.LocationRange;
 
 // AstLiteralString represents a JSON string
 public class AstLiteralString extends AstBaseNode {
-  String value;
+  public String value;
   LiteralStringKind kind;
   String blockIndent;
 
-  AstLiteralString(LocationRange loc) {
+  public AstLiteralString(LocationRange loc, String value, LiteralStringKind kind, String blockIndent) {
     super(loc);
-  }
-
-  enum astLiteralStringKind {
-    astStringSingle, astStringDouble, astStringBlock
+    this.value =  value;
+    this.kind = kind;
+    this.blockIndent = blockIndent;
   }
 }
 

@@ -7,19 +7,12 @@ import java.util.List;
 
 // AstLocal represents local x = e; e.  After de-sugaring, functionSugar is false.
 public class AstLocal extends AstBaseNode {
-  List<AstLocalBind> binds = new LinkedList<>();
+  List<AstLocalBind> binds;
   AstNode body;
 
-  AstLocal(LocationRange loc) {
+  public AstLocal(LocationRange loc,  List<AstLocalBind> binds, AstNode body) {
     super(loc);
-  }
-
-  // AstLocalBind is a helper struct for astLocal
-  static class AstLocalBind {
-    String variable;
-    AstNode body;
-    boolean functionSugar;
-    List<String> params = new LinkedList<>(); // if functionSugar is true
-    boolean trailingComma;
+    this.binds = binds;
+    this.body = body;
   }
 }

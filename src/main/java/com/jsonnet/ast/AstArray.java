@@ -10,7 +10,14 @@ public class AstArray extends AstBaseNode {
   List<AstNode> elements = new LinkedList<>();
   boolean trailingComma;
 
-  AstArray(LocationRange loc) {
+  public AstArray(LocationRange loc) {
     super(loc);
   }
+
+  public AstArray(LocationRange loc, List<AstNode> elements, boolean trailingComma) {
+    super(loc);
+    this.elements = elements;
+    this.trailingComma = trailingComma;
+  }
+
 }

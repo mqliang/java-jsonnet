@@ -7,8 +7,9 @@ import com.jsonnet.lexer.LocationRange;
 public class AstLiteralBoolean extends AstBaseNode {
   boolean value;
 
-  AstLiteralBoolean(LocationRange loc) {
+  public AstLiteralBoolean(LocationRange loc, boolean value) {
     super(loc);
+    this.value = value;
   }
 }
 

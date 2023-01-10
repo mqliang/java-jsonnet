@@ -4,10 +4,13 @@ import com.jsonnet.lexer.LocationRange;
 
 
 // AstLiteralNumber represents a JSON number
-class AstLiteralNumber extends AstBaseNode {
+public class AstLiteralNumber extends AstBaseNode {
   double value;
+  String originalString;
 
-  AstLiteralNumber(LocationRange loc) {
+  public AstLiteralNumber(LocationRange loc, double value, String text) {
     super(loc);
+    this.value =  value;
+    this.originalString = text;
   }
 }

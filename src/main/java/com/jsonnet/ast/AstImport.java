@@ -7,7 +7,8 @@ import com.jsonnet.lexer.LocationRange;
 public class AstImport extends AstBaseNode {
   String file;
 
-  AstImport(LocationRange loc) {
+  public AstImport(LocationRange loc, String file) {
     super(loc);
+    this.file = file;
   }
 }

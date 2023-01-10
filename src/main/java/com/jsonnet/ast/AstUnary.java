@@ -8,7 +8,9 @@ public class AstUnary extends AstBaseNode {
   UnaryOp op;
   AstNode expr;
 
-  AstUnary(LocationRange loc) {
+  public AstUnary(LocationRange loc, UnaryOp op, AstNode expr) {
     super(loc);
+    this.op = op;
+    this.expr = expr;
   }
 }

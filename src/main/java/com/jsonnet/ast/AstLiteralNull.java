@@ -4,8 +4,8 @@ import com.jsonnet.lexer.LocationRange;
 
 
 // AstLiteralNull represents the null keyword
-class AstLiteralNull extends AstBaseNode {
-  AstLiteralNull(LocationRange loc) {
+public class AstLiteralNull extends AstBaseNode {
+  public AstLiteralNull(LocationRange loc) {
     super(loc);
   }
 }
